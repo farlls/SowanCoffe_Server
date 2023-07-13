@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const port = 3001;
+const port = process.env.PORT || 3001;
 const mysql = require("mysql");
 const dotenv = require("dotenv");
 
@@ -15,11 +15,9 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DBNAME,
 });
-// Endpoints untuk API
+
 app.get("/menu/:value", (req, res) => {
   const value = req.params.value;
-  // Mengirimkan data sebagai respons
-  // console.log(`value: http://localhost:3001/menu/${value}`);
   db.query(
     "SELECT * FROM data_menu WHERE jenis = ?",
     [value],
@@ -28,6 +26,7 @@ app.get("/menu/:value", (req, res) => {
     }
   );
 });
+
 app.get("/menu/Burger", (req, res) => {
   db.query(
     "SELECT * FROM data_menu WHERE jenis = 'Burger'",
@@ -36,6 +35,7 @@ app.get("/menu/Burger", (req, res) => {
     }
   );
 });
+
 app.get("/menu/Main Course", (req, res) => {
   db.query(
     "SELECT * FROM data_menu WHERE jenis = 'Main Course'",
@@ -44,6 +44,7 @@ app.get("/menu/Main Course", (req, res) => {
     }
   );
 });
+
 app.get("/menu/Coffee", (req, res) => {
   db.query(
     "SELECT * FROM data_menu WHERE jenis = 'Coffee'",
@@ -52,6 +53,7 @@ app.get("/menu/Coffee", (req, res) => {
     }
   );
 });
+
 app.get("/menu/Dessert", (req, res) => {
   db.query(
     "SELECT * FROM data_menu WHERE jenis = 'Dessert'",
@@ -60,6 +62,7 @@ app.get("/menu/Dessert", (req, res) => {
     }
   );
 });
+
 db.connect((error) => {
   if (error) {
     console.error(
@@ -71,10 +74,6 @@ db.connect((error) => {
   }
 });
 
-// Menggunakan build dari proyek React sebagai sumber statis
-app.use(express.static("build"));
-
-// Menjalankan server
 app.listen(port, () => {
   console.log(`Server berjalan di http://localhost:${port}`);
 });
